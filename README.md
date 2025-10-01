@@ -59,21 +59,21 @@ cd cinema-challenge-back
 npm install
 
 Crie o arquivo de variáveis de ambiente
-# foi criado um arquivo chamado .env na raiz do projeto e adicionado os conteúdo abaixo:
+//foi criado um arquivo chamado .env na raiz do projeto e adicionado os conteúdo abaixo:
 
 Conteúdo do arquivo .env:
 
-# Porta em que o servidor irá rodar
+//Porta em que o servidor irá rodar
 PORT=3000
 
-# Chave secreta para gerar os tokens de autenticação (JWT)
+//Chave secreta para gerar os tokens de autenticação (JWT)
 
 JWT_SECRET=chave-criptografica-secreta-super-segura
 
-# String de conexão do MongoDB
+//String de conexão do MongoDB
 MONGODB_URI=mongodb+srv://<seu_usuario>:<sua_senha>@<seu_cluster>.mongodb.net/<nome_do_banco>?retryWrites=true&w=majority
  5. Popule o banco de dados com dados iniciais
-# (Execute os comandos na ordem)
+// (Execute os comandos na ordem)
 npm run seed
 node src/utils/seedMoreMovies.js
 node src/utils/seedSessions.js
