@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.3.2 (Python 3.13.7 on win32)" generated="2025-10-08T18:03:12.211807" rpa="false" schemaversion="5">
+<suite id="s1" name="Tests" source="C:\Users\Andressa\Documents\challenge-final\-challenge-Final\tests-api\tests">
+<suite id="s1-s1" name="Authentication" source="C:\Users\Andressa\Documents\challenge-final\-challenge-Final\tests-api\tests\authentication.robot">
+<test id="s1-s1-t1" name="CT-API-001: Cadastrar novo usuário com sucesso" line="10">
+<kw name="iniciar sessao" owner="common" type="SETUP">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2025-10-08T18:03:14.144809" level="INFO">${headers} = {'Content-Type': 'application/json'}</msg>
+<var>${headers}</var>
+<arg>Content-Type=application/json</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2025-10-08T18:03:14.143691" elapsed="0.001248"/>
+</kw>
+<kw name="Create Session" owner="RequestsLibrary">
+<msg time="2025-10-08T18:03:14.147119" level="INFO">Creating Session using : alias=cinema, url=http://localhost:3000/api/v1, headers={'Content-Type': 'application/json'},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<arg>cinema</arg>
+<arg>${BASE_URL}</arg>
+<arg>headers=${headers}</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<status status="PASS" start="2025-10-08T18:03:14.146408" elapsed="0.001492"/>
+</kw>
+<status status="PASS" start="2025-10-08T18:03:14.140196" elapsed="0.007913"/>
+</kw>
+<kw name="Cadastrar usuario valido" owner="authentication-page">
+<kw name="importar json estatico" owner="common">
+<kw name="Load Json From File" owner="JSONLibrary">
+<msg time="2025-10-08T18:03:14.151975" level="INFO">${json} = {'usuario_valido': {'name': 'Andressa Mota', 'email': 'usuario_valido@teste.com', 'password': 'Senha123'}, 'usuario_duplicado': {'name': 'Usuario Duplicado', 'email': 'usuario_duplicado@teste.com', 'p...</msg>
+<var>${json}</var>
+<arg>C:\\Users\\Andressa\\Documents\\challenge-final\\-challenge-Final\\tests-api\\resources\\libs/fixtures/${nome_arquivo}</arg>
+<arg>encoding=UTF-8</arg>
+<doc>Load JSON from file.</doc>
+<status status="PASS" start="2025-10-08T18:03:14.150323" elapsed="0.001713"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>C:\\Users\\Andressa\\Documents\\challenge-final\\-challenge-Final\\tests-api\\resources\\libs</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2025-10-08T18:03:14.152273" elapsed="0.001167"/>
+</kw>
+<return>
+<value>${json}</value>
+<status status="PASS" start="2025-10-08T18:03:14.153663" elapsed="0.000231"/>
+</return>
+<msg time="2025-10-08T18:03:14.154759" level="INFO">${json} = {'usuario_valido': {'name': 'Andressa Mota', 'email': 'usuario_valido@teste.com', 'password': 'Senha123'}, 'usuario_duplicado': {'name': 'Usuario Duplicado', 'email': 'usuario_duplicado@teste.com', 'p...</msg>
+<var>${json}</var>
+<arg>authentication.json</arg>
+<status status="PASS" start="2025-10-08T18:03:14.149722" elapsed="0.005287"/>
+</kw>
+<kw name="Get From Dictionary" owner="Collections">
+<msg time="2025-10-08T18:03:14.155951" level="INFO">${body} = {'name': 'Andressa Mota', 'email': 'usuario_valido@teste.com', 'password': 'Senha123'}</msg>
+<var>${body}</var>
+<arg>${json}</arg>
+<arg>usuario_valido</arg>
+<doc>Returns a value from the given ``dictionary`` based on the given ``key``.</doc>
+<status status="PASS" start="2025-10-08T18:03:14.155495" elapsed="0.000518"/>
+</kw>
+<kw name="Generate Random String" owner="String">
+<msg time="2025-10-08T18:03:14.156865" level="INFO">${email_rand} = inkhfu</msg>
+<var>${email_rand}</var>
+<arg>6</arg>
+<arg>[LOWER]</arg>
+<doc>Generates a string with a desired ``length`` from the given ``chars``.</doc>
+<status status="PASS" start="2025-10-08T18:03:14.156281" elapsed="0.000675"/>
+</kw>
+<kw name="Set To Dictionary" owner="Collections">
+<arg>${body}</arg>
+<arg>email</arg>
+<arg>${email_rand}@mail.com</arg>
+<doc>Adds the given ``key_value_pairs`` and/or ``items`` to the ``dictionary``.</doc>
+<status status="PASS" start="2025-10-08T18:03:14.157206" elapsed="0.000281"/>
+</kw>
+<kw name="Generate Random String" owner="String">
+<msg time="2025-10-08T18:03:14.158002" level="INFO">${nome_rand} = mktz</msg>
+<var>${nome_rand}</var>
+<arg>4</arg>
+<arg>[LOWER]</arg>
+<doc>Generates a string with a desired ``length`` from the given ``chars``.</doc>
+<status status="PASS" start="2025-10-08T18:03:14.157681" elapsed="0.000363"/>
+</kw>
+<kw name="Set To Dictionary" owner="Collections">
+<arg>${body}</arg>
+<arg>nome</arg>
+<arg>${nome_rand}tester</arg>
+<doc>Adds the given ``key_value_pairs`` and/or ``items`` to the ``dictionary``.</doc>
+<status status="PASS" start="2025-10-08T18:03:14.158244" elapsed="0.000245"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2025-10-08T18:03:14.659460" level="INFO">POST Request : url=http://localhost:3000/api/v1/auth/register 
+ path_url=/api/v1/auth/register 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Type': 'application/json', 'Content-Length': '99'} 
+ body=b'{"name": "Andressa Mota", "email": "inkhfu@mail.com", "password": "Senha123", "nome": "mktztester"}' 
+ </msg>
+<msg time="2025-10-08T18:03:14.659627" level="INFO">POST Response : url=http://localhost:3000/api/v1/auth/register 
+ status=201, reason=Created 
+ headers={'X-Powered-By': 'Express', 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '303', 'ETag': 'W/"12f-4OJIY8H/WvYABd45rB0/SdwychE"', 'Date': 'Wed, 08 Oct 2025 21:03:14 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
+ body={"success":true,"data":{"_id":"68e6d192cc9225d4a175cb50","name":"Andressa Mota","email":"inkhfu@mail.com","role":"user","token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTZkMTkyY2M5MjI1ZDRhMTc1Y2I1MCIsImlhdCI6MTc1OTk1NzM5NCwiZXhwIjoxNzYwMDQzNzk0fQ.uMJMKuln4C6Syyjlx3JGnp5YIUNT6PY7qYeSkGAgwhw"}} 
+ </msg>
+<msg time="2025-10-08T18:03:14.659828" level="INFO">${resposta} = &lt;Response [201]&gt;</msg>
+<var>${resposta}</var>
+<arg>cinema</arg>
+<arg>/auth/register</arg>
+<arg>json=${body}</arg>
+<arg>expected_status=${status_esperado}</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2025-10-08T18:03:14.158664" elapsed="0.501211"/>
+</kw>
+<return>
+<value>${resposta}</value>
+<status status="PASS" start="2025-10-08T18:03:14.659985" elapsed="0.000068"/>
+</return>
+<msg time="2025-10-08T18:03:14.660277" level="INFO">${resp} = &lt;Response [201]&gt;</msg>
+<var>${resp}</var>
+<arg>201</arg>
+<status status="PASS" start="2025-10-08T18:03:14.148900" elapsed="0.511421"/>
+</kw>
+<kw name="Conferência de cadastro" owner="common">
+<kw name="Dictionary Should Contain Key" owner="Collections">
+<arg>${response['data']}</arg>
+<arg>_id</arg>
+<doc>Fails if ``key`` is not found from ``dictionary``.</doc>
+<status status="PASS" start="2025-10-08T18:03:14.662189" elapsed="0.000869"/>
+</kw>
+<arg>${resp.json()}</arg>
+<status status="PASS" start="2025-10-08T18:03:14.660868" elapsed="0.002316"/>
+</kw>
+<status status="PASS" start="2025-10-08T18:03:14.138580" elapsed="0.525013"/>
+</test>
+<doc>casos te teste de autenticação de usuarios</doc>
+<status status="PASS" start="2025-10-08T18:03:12.331996" elapsed="2.333039"/>
+</suite>
+<status status="PASS" start="2025-10-08T18:03:12.216837" elapsed="2.450491"/>
+</suite>
+<statistics>
+<total>
+<stat pass="1" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat name="Tests" id="s1" pass="1" fail="0" skip="0">Tests</stat>
+<stat name="Authentication" id="s1-s1" pass="1" fail="0" skip="0">Tests.Authentication</stat>
+</suite>
+</statistics>
+<errors>
+<msg time="2025-10-08T18:03:13.008141" level="WARN">Error in file 'C:\Users\Andressa\Documents\challenge-final\-challenge-Final\tests-api\resources\libs\pages\authentication-page.resource' on line 19: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+<msg time="2025-10-08T18:03:13.009096" level="WARN">Error in file 'C:\Users\Andressa\Documents\challenge-final\-challenge-Final\tests-api\resources\libs\pages\authentication-page.resource' on line 37: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+<msg time="2025-10-08T18:03:13.009845" level="WARN">Error in file 'C:\Users\Andressa\Documents\challenge-final\-challenge-Final\tests-api\resources\libs\pages\authentication-page.resource' on line 45: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+<msg time="2025-10-08T18:03:13.010574" level="WARN">Error in file 'C:\Users\Andressa\Documents\challenge-final\-challenge-Final\tests-api\resources\libs\pages\authentication-page.resource' on line 52: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+<msg time="2025-10-08T18:03:13.011303" level="WARN">Error in file 'C:\Users\Andressa\Documents\challenge-final\-challenge-Final\tests-api\resources\libs\pages\authentication-page.resource' on line 62: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+<msg time="2025-10-08T18:03:13.011998" level="WARN">Error in file 'C:\Users\Andressa\Documents\challenge-final\-challenge-Final\tests-api\resources\libs\pages\authentication-page.resource' on line 67: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+<msg time="2025-10-08T18:03:13.012661" level="WARN">Error in file 'C:\Users\Andressa\Documents\challenge-final\-challenge-Final\tests-api\resources\libs\pages\authentication-page.resource' on line 72: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+<msg time="2025-10-08T18:03:13.013389" level="WARN">Error in file 'C:\Users\Andressa\Documents\challenge-final\-challenge-Final\tests-api\resources\libs\pages\authentication-page.resource' on line 80: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+<msg time="2025-10-08T18:03:13.014334" level="WARN">Error in file 'C:\Users\Andressa\Documents\challenge-final\-challenge-Final\tests-api\resources\libs\pages\authentication-page.resource' on line 89: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+<msg time="2025-10-08T18:03:13.015906" level="WARN">Error in file 'C:\Users\Andressa\Documents\challenge-final\-challenge-Final\tests-api\resources\libs\pages\authentication-page.resource' on line 97: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+<msg time="2025-10-08T18:03:13.016998" level="WARN">Error in file 'C:\Users\Andressa\Documents\challenge-final\-challenge-Final\tests-api\resources\libs\pages\authentication-page.resource' on line 103: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+<msg time="2025-10-08T18:03:13.018062" level="WARN">Error in file 'C:\Users\Andressa\Documents\challenge-final\-challenge-Final\tests-api\resources\libs\pages\authentication-page.resource' on line 111: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+<msg time="2025-10-08T18:03:13.019281" level="WARN">Error in file 'C:\Users\Andressa\Documents\challenge-final\-challenge-Final\tests-api\resources\libs\pages\authentication-page.resource' on line 120: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+<msg time="2025-10-08T18:03:13.020377" level="WARN">Error in file 'C:\Users\Andressa\Documents\challenge-final\-challenge-Final\tests-api\resources\libs\pages\authentication-page.resource' on line 126: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+<msg time="2025-10-08T18:03:13.024207" level="WARN">Error in file 'C:\Users\Andressa\Documents\challenge-final\-challenge-Final\tests-api\resources\libs\pages\authentication-page.resource' on line 140: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+<msg time="2025-10-08T18:03:13.025017" level="WARN">Error in file 'C:\Users\Andressa\Documents\challenge-final\-challenge-Final\tests-api\resources\libs\pages\authentication-page.resource' on line 146: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+<msg time="2025-10-08T18:03:13.026162" level="WARN">Error in file 'C:\Users\Andressa\Documents\challenge-final\-challenge-Final\tests-api\resources\libs\pages\authentication-page.resource' on line 152: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+</errors>
+</robot>
