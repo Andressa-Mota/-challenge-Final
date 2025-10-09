@@ -9,6 +9,10 @@
     "email": "usuario_duplicado@teste.com",
     "password": "Senha123"
   },
+   "usuario_falta": {
+    "name": "Usuario faltando",
+    "email": "usuario_faltando@teste.com"
+  },
   "usuario_adm": {
   "name": "Admin User",
   "email": "admin@example.com",
