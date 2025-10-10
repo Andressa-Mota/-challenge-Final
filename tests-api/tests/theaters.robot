@@ -1,5 +1,5 @@
 *** Settings ***
-Documentation    casos te teste relacionados a usuarios
+Documentation    casos te teste relacionados a salas
 Resource    ../resources/libs/common.resource
 
 #executa antes de cada teste

@@ -1,5 +1,5 @@
 *** Settings ***
-Documentation    casos de teste relacionados a filmes
+Documentation    casos de teste relacionados a reservas
 Resource    ../resources/libs/common.resource
 Resource    ../resources/libs/pages/films-page.resource
 
