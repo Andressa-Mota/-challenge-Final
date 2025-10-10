@@ -1,0 +1,21 @@
+{
+  "usuario_valido": {
+    "name": "Andressa Mota",
+    "email": "usuario_valido@teste.com",
+    "password": "Senha123"
+  },
+  "usuario_duplicado": {
+    "name": "Usuario Duplicado",
+    "email": "usuario_duplicado@teste.com",
+    "password": "Senha123"
+  },
+   "usuario_falta": {
+    "name": "Usuario faltando",
+    "email": "usuario_faltando@teste.com"
+  },
+  "usuario_adm": {
+  "name": "Admin User",
+  "email": "admin@example.com",
+  "password": "admin123"
+}
+}
