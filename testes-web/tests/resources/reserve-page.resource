@@ -15,6 +15,9 @@ Extrair valor numerico do preco
     RETURN    ${valor_numerico}
 
 # Keyword para encontrar, clicar e retornar o primeiro assento livre
+*** Keywords ***
+Encontrar e clicar no primeiro assento disponível
+    [Documentation]    Encontra o primeiro assento com a classe 'available' e dispara o clique corretamente via JavaScript.
 Encontrar e clicar no primeiro assento disponível
     [Documentation]    Encontra o primeiro assento com a classe 'available',
     ...                clica nele usando JavaScript e retorna o seletor.
@@ -23,6 +26,13 @@ Encontrar e clicar no primeiro assento disponível
 
     Wait For Elements State    ${seletor_assento}    visible    timeout=5s
 
+    # Pega o elemento do assento
+    ${elemento}=    Get Element    ${seletor_assento}
+
+    # Força o clique via JS para disparar todos os eventos do front-end
+      Evaluate JavaScript    ${seletor_assento}    element => element.click()
+
+    RETURN    ${seletor_assento}
     # CORREÇÃO DEFINITIVA: Usamos JavaScript para garantir que o clique aconteça e
     # dispare todos os eventos da página corretamente.
    Evaluate JavaScript    ${seletor_assento}    element => element.click()
