@@ -3,7 +3,7 @@ Documentation    Elementos e ações de reservas
 
 Library    Browser
 Library    String
-Resource   libs/env.resource
+Resource   base.resource
 
 *** Keywords ***
 # Keyword para extrair o número de um texto de preço
@@ -14,25 +14,32 @@ Extrair valor numerico do preco
     ${valor_numerico}=    Convert To Number    ${valor_string}
     RETURN    ${valor_numerico}
 
-# Keyword para encontrar, clicar e retornar o primeiro assento livre
-*** Keywords ***
+
 Encontrar e clicar no primeiro assento disponível
-    [Documentation]    Encontra o primeiro assento com a classe 'available' e dispara o clique corretamente via JavaScript.
-Encontrar e clicar no primeiro assento disponível
-    [Documentation]    Encontra o primeiro assento com a classe 'available' e dispara o clique corretamente via JavaScript.
+    ${seletor_do_primeiro_disponivel}=    Set Variable    css=:nth-match(button.seat.available, 1)
+    Wait For Elements State    ${seletor_do_primeiro_disponivel}    visible    timeout=5s
 
-    ${seletor_assento}=    Set Variable    css=:nth-match(button.seat.available, 1)
+    # Pega o atributo "title" completo
+    ${titulo_completo}=    Get Attribute    ${seletor_do_primeiro_disponivel}    title
 
-    Wait For Elements State    ${seletor_assento}    visible    timeout=5s
+    Click    ${seletor_do_primeiro_disponivel}
+    @{partes_do_titulo}=    Split String    ${titulo_completo}    - Status:
+    ${identificador_estavel}=    Set Variable    ${partes_do_titulo}[0]
+    RETURN    ${identificador_estavel}
 
-    # Pega o elemento do assento
-    ${elemento}=    Get Element    ${seletor_assento}
 
-    # Força o clique via JS para disparar todos os eventos do front-end
-      Evaluate JavaScript    ${seletor_assento}    element => element.click()
 
-    RETURN    ${seletor_assento}
-    # CORREÇÃO DEFINITIVA: Usamos JavaScript para garantir que o clique aconteça e
-    # dispare todos os eventos da página corretamente.
-   Evaluate JavaScript    ${seletor_assento}    element => element.click()
-    RETURN    ${seletor_assento}
+Capturar subtotal
+
+    ${seletor_do_preco}=    Set Variable    css=span.price
+
+    Wait For Elements State    ${seletor_do_preco}    visible    timeout=5s
+    ${texto_do_preco}=     Get Text    ${seletor_do_preco}
+
+    # Se Get Text falhar em pegar o valor, tenta com Get Property (torna mais robusto)
+    IF    '${texto_do_preco}' == ''
+        ${texto_do_preco}=    Get Property    ${seletor_do_preco}    textContent
+    END
+    ${valor_numerico}=     Extrair valor numerico do preco    ${texto_do_preco}
+
+    RETURN              ${valor_numerico}
