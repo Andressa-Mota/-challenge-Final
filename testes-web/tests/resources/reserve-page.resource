@@ -30,9 +30,7 @@ Encontrar e clicar no primeiro assento disponível
 
 
 Capturar subtotal
-    [Documentation]    Aguarda o subtotal estar visível e retorna o valor numérico.
 
-    # Usamos o seletor que descobrimos juntos para o preço total
     ${seletor_do_preco}=    Set Variable    css=span.price
 
     Wait For Elements State    ${seletor_do_preco}    visible    timeout=5s
@@ -42,8 +40,6 @@ Capturar subtotal
     IF    '${texto_do_preco}' == ''
         ${texto_do_preco}=    Get Property    ${seletor_do_preco}    textContent
     END
-
-    # Usa a outra keyword auxiliar para extrair apenas o número do texto (ex: "R$ 50,00" -> 50.00)
     ${valor_numerico}=     Extrair valor numerico do preco    ${texto_do_preco}
 
     RETURN              ${valor_numerico}
