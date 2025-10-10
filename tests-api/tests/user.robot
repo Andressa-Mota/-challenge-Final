@@ -1,5 +1,5 @@
 *** Settings ***
-Documentation    casos te teste de autenticação de usuarios
+Documentation    casos te teste relacionados a usuarios
 Resource    ../resources/libs/common.resource
 
 #executa antes de cada teste
@@ -34,6 +34,8 @@ CT-API-005: Login com senha incorreta
 CT-API-006: Obter dados do usuário
    [Tags]    POST    AUT/ME
    ${resp_login}=  Cadastrar usuario e fazer login    200
+   #A próxima linha foi criada com auxílio de IA, pois eu não entendia o erro de não encontrar o token na resposta, só após pedir queela analisasse o corpoda resposta
+    #pude compreender que token, e outros itens, se encontravam encapsulados dentro de "data" e que é necessário informar esse caminho antes para encontrar os dados retornados no corpo da resposta
     ${token}=          Set Variable    ${resp_login.json()['data']['token']}
     ${resp_perfil}=    Obter dados do usuario    ${token}
     Conferência de dados do usuário    ${resp_perfil.json()}
@@ -68,7 +70,7 @@ CT-API-010: Deletar um usuário
     ${resp_cadastro_user}    ${credenciais_user}=    Cadastrar usuario valido e retornar credenciais    201
     ${id_usuario_alvo}=     Set Variable    ${resp_cadastro_user.json()['data']['_id']}
     ${resp_delete}=  Deletar usuário com token    ${token_adm}    ${id_usuario_alvo}    200
-    Conferência de delete com seucesso    ${resp_delete.json()}    User deleted successfully
+    Conferência de delete com seucesso    ${resp_delete.json()}    User removed
 
 CT-API-011: Atualizar um usuário 
     [Tags]    PUT   USERS   ADMIN

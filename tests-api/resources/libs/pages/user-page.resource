@@ -4,15 +4,11 @@ Library           Collections
 Library           JSONLibrary
 Library            OperatingSystem
 Library           String
-Library        FakerLibrary
 Resource          ../common.resource
 
 *** Keywords ***
 Setup da Suíte
     iniciar sessao
-
-
-
 # --- Keywords de Autenticação e Login ---
 Cadastrar usuario e fazer login
     [Arguments]    ${status_esperado}
@@ -75,7 +71,7 @@ Login com senha incorreta
     ${nome_rand}=    Generate Random String    8    [LOWER]
     Set To Dictionary   ${auth_body}    name     User ${nome_rand} 
     POST On Session    cinema    /auth/register    json=${auth_body}    expected_status=any
-    # ---  LOGIN ---
+    # LOGIN 
     ${login_body}=   Create Dictionary    email=${email_rand}@mail.com    password=senhaincorreta
     ${resposta_login}=   POST On Session    cinema    /auth/login    json=${login_body}    expected_status=${status_esperado} 
     RETURN  ${resposta_login}
