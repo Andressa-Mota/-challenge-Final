@@ -18,5 +18,4 @@ CT-FE-012: Ir à seleção de lugares
     ir para pagina inicial
      ${titulo_clicado}=    Selecionar o primeiro filme da lista e ver detalhes
     ${titulo_clicado}=    Selecionar a primeira sessão da lista
-    Wait For Elements State    css=.session-details h1     visible    timeout=5s
-    Get Text    css=.session-details h1    ==    ${titulo_clicado}
+     Conferir mensagem na tela      Assentos Selecionados:

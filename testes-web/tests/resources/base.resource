@@ -8,6 +8,7 @@ Resource     login-page.resource
 Resource    checkweb.resource
 Resource    films-page.resource
 Resource    sessions-page.resource
+Resource    reserve-page.resource
 
 *** Keywords ***
 
