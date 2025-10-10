@@ -19,8 +19,7 @@ Extrair valor numerico do preco
 Encontrar e clicar no primeiro assento disponível
     [Documentation]    Encontra o primeiro assento com a classe 'available' e dispara o clique corretamente via JavaScript.
 Encontrar e clicar no primeiro assento disponível
-    [Documentation]    Encontra o primeiro assento com a classe 'available',
-    ...                clica nele usando JavaScript e retorna o seletor.
+    [Documentation]    Encontra o primeiro assento com a classe 'available' e dispara o clique corretamente via JavaScript.
 
     ${seletor_assento}=    Set Variable    css=:nth-match(button.seat.available, 1)
 
