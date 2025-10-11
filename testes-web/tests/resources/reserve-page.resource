@@ -18,8 +18,6 @@ Extrair valor numerico do preco
 Encontrar e clicar no primeiro assento disponível
     ${seletor_do_primeiro_disponivel}=    Set Variable    css=:nth-match(button.seat.available, 1)
     Wait For Elements State    ${seletor_do_primeiro_disponivel}    visible    timeout=5s
-
-    # Pega o atributo "title" completo
     ${titulo_completo}=    Get Attribute    ${seletor_do_primeiro_disponivel}    title
 
     Click    ${seletor_do_primeiro_disponivel}
@@ -36,7 +34,7 @@ Capturar subtotal
     Wait For Elements State    ${seletor_do_preco}    visible    timeout=5s
     ${texto_do_preco}=     Get Text    ${seletor_do_preco}
 
-    # Se Get Text falhar em pegar o valor, tenta com Get Property (torna mais robusto)
+    # Se Get Text falhar em pegar o valor, tenta com Get Property
     IF    '${texto_do_preco}' == ''
         ${texto_do_preco}=    Get Property    ${seletor_do_preco}    textContent
     END
@@ -52,11 +50,13 @@ Verificar se o clique em elemento desabilitado falha
 
 Selecionar método de pagamento
     [Arguments]    ${metodo}
-    [Documentation]    Na tela de pagamento, seleciona o método desejado.
-
-    # Este seletor assume que o método de pagamento é um botão com o texto correspondente.
-    # Verifique no seu HTML se este é o seletor correto.
     ${seletor}=    Set Variable    css=div.payment-method:has-text("${metodo}")
     Wait For Elements State    ${seletor}    visible    timeout=5s
     Click    ${seletor}
 
+Capturar código da reserva
+    # Este seletor XPath encontra o <span> que vem logo depois do <span> com o texto "Código da Reserva:"
+    ${seletor_codigo}=    Set Variable    xpath=//span[text()='Código da Reserva:']/following-sibling::span
+    Wait For Elements State    ${seletor_codigo}    visible    timeout=5s
+    ${codigo}=               Get Text    ${seletor_codigo}
+    RETURN                   ${codigo}
