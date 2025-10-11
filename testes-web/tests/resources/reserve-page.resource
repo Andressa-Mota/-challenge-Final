@@ -43,3 +43,9 @@ Capturar subtotal
     ${valor_numerico}=     Extrair valor numerico do preco    ${texto_do_preco}
 
     RETURN              ${valor_numerico}
+
+Verificar se o clique em elemento desabilitado falha
+    [Arguments]    ${seletor_do_elemento}
+    ${status}    ${mensagem_de_erro}=    Run Keyword And Ignore Error    Click    ${seletor_do_elemento}
+    Should Be Equal As Strings    ${status}    FAIL
+    Should Contain    ${mensagem_de_erro}    element is not enabled

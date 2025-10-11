@@ -5,11 +5,12 @@ Library    Browser
 Resource   libs/env.resource
 
 *** Keywords ***
-Conferir mensagem na tela 
+Conferir mensagem na tela
     [Arguments]    ${mensagem_esperada}
     ${seletor_da_notificacao}=    Set Variable    xpath=//*[contains(text(), "${mensagem_esperada}")]
+    Scroll To Element    ${seletor_da_notificacao}
     Wait For Elements State    ${seletor_da_notificacao}    visible    timeout=5s
-   Get Text   ${seletor_da_notificacao}    ==    ${mensagem_esperada}
+    Get Text                   ${seletor_da_notificacao}    ==    ${mensagem_esperada}
 
 Conferir mensagem de validação de campo
     [Arguments]    ${seletor_do_campo}    ${mensagem_esperada}

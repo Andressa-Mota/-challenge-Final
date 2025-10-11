@@ -20,6 +20,7 @@ submeter formulario de login
     Fill Text    css=input[placeholder$='senha']    ${user}[password] 
 
     Click   css=button >> text=Entrar
+    Wait For Function    () => window.localStorage.getItem('token')
 
 fazer logout
     Click   css=button >> text= Sair
