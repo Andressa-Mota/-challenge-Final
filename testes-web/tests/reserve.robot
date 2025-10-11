@@ -5,6 +5,7 @@ Library          String
 Library          Browser
 Library    Dialogs
 Resource         resources/base.resource
+Resource    resources/reserve-page.resource
 
 
 Test Setup       start session
@@ -37,18 +38,15 @@ CT-FE-013: Selecionar e deselecionar um assento
     Should Be Equal As Numbers    ${subtotal_final}    ${subtotal_inicial}
 
 CT-FE-014: Não deve selecionar um assento já ocupado
-    [Tags]    SEATS   NEGATIVE   WEB
+    [Tags]   Assentos    NEGATIVO
 
-    # --- SETUP 1: Usuário 1 (Ocupa o assento) ---
-    # 1.1: Cria o primeiro usuário (o bloqueador) via interface
+    #  Cria o primeiro usuário 
     ${email_user1}=    Generate Random String    8    [LOWER]
     ${user1}=          Create Dictionary    name=User Bloqueador    email=${email_user1}@test.com    password=senha123
     remover usuario do banco de dados    ${user1}[email] # Limpeza prévia
     ir para pagina de cadastro
     submeter o formulario de cadastro    ${user1}
     Conferir mensagem na tela    Conta criada com sucesso!
-
-    # 1.2: Faz o login e reserva o assento
     ir para pagina de login
     submeter formulario de login    ${user1}
     Conferir mensagem na tela    Login realizado com sucesso!
@@ -57,22 +55,17 @@ CT-FE-014: Não deve selecionar um assento já ocupado
     Selecionar a primeira sessão da lista
     Wait For Elements State    css=.seats-container    visible    timeout=5s
     ${titulo_do_assento_ocupado}=    Encontrar e clicar no primeiro assento disponível
-    # Finaliza a reserva para que o assento fique 'occupied' (ocupado)
     Click                     css=button >> text=Continuar para Pagamento
     Click                     css=button >> text=Finalizar Compra
     Conferir mensagem na tela   Reserva Confirmada!
     fazer logout
-
-    # --- SETUP 2: Usuário 2 (O Testador) ---
-    # 2.1: Cria o segundo usuário (o que vai testar) via interface
+    #  Cria o segundo usuário 
     ${email_user2}=    Generate Random String    8    [LOWER]
-    ${user2}=          Create Dictionary    name=User Testador    email=${email_user2}@test.com    password=senha123
+    ${user2}=          Create Dictionary    name=User02    email=${email_user2}@test.com    password=senha123
     remover usuario do banco de dados    ${user2}[email]
     ir para pagina de cadastro
     submeter o formulario de cadastro    ${user2}
     Conferir mensagem na tela    Conta criada com sucesso!
-
-    # 2.2: Faz o login e navega para a mesma sessão que o Usuário 1
     ir para pagina de login
     submeter formulario de login    ${user2}
     Conferir mensagem na tela    Login realizado com sucesso!
@@ -80,13 +73,43 @@ CT-FE-014: Não deve selecionar um assento já ocupado
     Ver detalhes do filme pelo título    ${titulo_filme} 
     Selecionar a primeira sessão da lista
     Wait For Elements State    css=.seats-container    visible    timeout=5s
-
-    # --- VALIDAÇÃO FINAL: Verificar se o assento ocupado está desabilitado ---
-    # Construímos o seletor para o assento que o Usuário 1 ocupou
     ${seletor_assento_ocupado}=    Set Variable    css=button[title^="${titulo_do_assento_ocupado}"]
-
-    # Verificamos os estados do botão, provando que a aplicação o bloqueou
     ${estados_do_assento}=         Get Element States    ${seletor_assento_ocupado}
 
    #tenta clicar no assento ocupado e espera um erro
     Verificar se o clique em elemento desabilitado falha    ${seletor_assento_ocupado}
+
+CT-FE-015: Realizar uma reserva completa com sucesso
+    [Tags]    RESERVA     SUCESSO
+
+    # --- SETUP: Cadastrar e Logar um novo usuário via INTERFACE ---
+    ${email_rand}=    Generate Random String    8    [LOWER]
+    ${user}=          Create Dictionary    name=Usuariocompleto    email=${email_rand}@test.com    password=senha123
+    remover usuario do banco de dados    ${user}[email] 
+    ir para pagina de cadastro
+    submeter o formulario de cadastro    ${user}
+    Conferir mensagem na tela    Conta criada com sucesso!
+    ir para pagina de login
+    submeter formulario de login    ${user}
+    Conferir mensagem na tela    Login realizado com sucesso!
+
+    # --- NAVEGAÇÃO: Encontrar uma sessão para reservar ---
+    ir para pagina inicial
+    ${titulo_clicado}=    Selecionar o primeiro filme da lista e ver detalhes
+    Selecionar a primeira sessão da lista
+    Wait For Elements State    css=.seats-container    visible    timeout=5s
+
+    # --- SELEÇÃO DE ASSENTOS: Escolher dois assentos ---
+    ${subtotal_inicial}=    Capturar subtotal
+    ${assento1}=            Encontrar e clicar no primeiro assento disponível
+    ${assento2}=            Encontrar e clicar no primeiro assento disponível
+    ${subtotal_com_2_assentos}=    Capturar subtotal
+    Should Be True           ${subtotal_com_2_assentos} > ${subtotal_inicial}
+
+    # --- PAGAMENTO: Continuar e finalizar a compra ---
+    Click      css=button.checkout-button
+    Selecionar método de pagamento    Cartão de Crédito 
+    Click    css=button >> text=Finalizar Compra
+
+    # --- VALIDAÇÃO FINAL: Verificar a página de confirmação ---
+    Conferir mensagem na tela    Reserva Confirmada!

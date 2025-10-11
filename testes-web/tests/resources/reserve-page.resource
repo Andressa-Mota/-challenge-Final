@@ -49,3 +49,14 @@ Verificar se o clique em elemento desabilitado falha
     ${status}    ${mensagem_de_erro}=    Run Keyword And Ignore Error    Click    ${seletor_do_elemento}
     Should Be Equal As Strings    ${status}    FAIL
     Should Contain    ${mensagem_de_erro}    element is not enabled
+
+Selecionar método de pagamento
+    [Arguments]    ${metodo}
+    [Documentation]    Na tela de pagamento, seleciona o método desejado.
+
+    # Este seletor assume que o método de pagamento é um botão com o texto correspondente.
+    # Verifique no seu HTML se este é o seletor correto.
+    ${seletor}=    Set Variable    css=div.payment-method:has-text("${metodo}")
+    Wait For Elements State    ${seletor}    visible    timeout=5s
+    Click    ${seletor}
+
