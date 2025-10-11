@@ -2,6 +2,7 @@
 Documentation    Elementos e ações de registro de usuarios
 
 Library    Browser
+Library    String
 Resource   libs/env.resource
 
 *** Keywords ***
@@ -25,4 +26,12 @@ Conferir pagina de login
     Get Text    ${titulo_filmes_em_cartaz}        ==       Login
 
 
-    
+Conferir se a reserva está na lista
+    [Arguments]    ${codigo_da_reserva_completo}
+    Click    xpath=//a[normalize-space()="Minhas Reservas"]
+    Wait For Elements State    css=h1:has-text("Minhas Reservas")    visible    timeout=5s
+    ${codigo_curto}=    Get Substring   ${codigo_da_reserva_completo}    0    8
+    # procuramor por um cosdigo mais curto na página.
+     ${texto_esperado_no_card}=    Set Variable    Reserva #${codigo_curto}
+   ${seletor_reserva}=    Set Variable   xpath=//h3[contains(., "Reserva #") and contains(., "${codigo_curto}")]
+    Wait For Elements State    ${seletor_reserva}    visible    timeout=5s

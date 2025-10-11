@@ -82,7 +82,6 @@ CT-FE-014: Não deve selecionar um assento já ocupado
 CT-FE-015: Realizar uma reserva completa com sucesso
     [Tags]    RESERVA     SUCESSO
 
-    # --- SETUP: Cadastrar e Logar um novo usuário via INTERFACE ---
     ${email_rand}=    Generate Random String    8    [LOWER]
     ${user}=          Create Dictionary    name=Usuariocompleto    email=${email_rand}@test.com    password=senha123
     remover usuario do banco de dados    ${user}[email] 
@@ -93,23 +92,42 @@ CT-FE-015: Realizar uma reserva completa com sucesso
     submeter formulario de login    ${user}
     Conferir mensagem na tela    Login realizado com sucesso!
 
-    # --- NAVEGAÇÃO: Encontrar uma sessão para reservar ---
     ir para pagina inicial
     ${titulo_clicado}=    Selecionar o primeiro filme da lista e ver detalhes
     Selecionar a primeira sessão da lista
     Wait For Elements State    css=.seats-container    visible    timeout=5s
-
-    # --- SELEÇÃO DE ASSENTOS: Escolher dois assentos ---
     ${subtotal_inicial}=    Capturar subtotal
     ${assento1}=            Encontrar e clicar no primeiro assento disponível
     ${assento2}=            Encontrar e clicar no primeiro assento disponível
     ${subtotal_com_2_assentos}=    Capturar subtotal
     Should Be True           ${subtotal_com_2_assentos} > ${subtotal_inicial}
-
-    # --- PAGAMENTO: Continuar e finalizar a compra ---
     Click      css=button.checkout-button
     Selecionar método de pagamento    Cartão de Crédito 
     Click    css=button >> text=Finalizar Compra
-
-    # --- VALIDAÇÃO FINAL: Verificar a página de confirmação ---
     Conferir mensagem na tela    Reserva Confirmada!
+
+CT-FE-016: Visualizar reserva na página "Minhas Reservas" após a compra
+    [Tags]    RESERVA     SUCESSO
+
+    ${email_rand}=    Generate Random String    8    [LOWER]
+    ${user}=          Create Dictionary    name=Usuario Final    email=${email_rand}@test.com    password=senha123
+    remover usuario do banco de dados    ${user}[email] 
+    ir para pagina de cadastro
+    submeter o formulario de cadastro    ${user}
+    Conferir mensagem na tela    Conta criada com sucesso!
+    ir para pagina de login
+    submeter formulario de login    ${user}
+    Conferir mensagem na tela    Login realizado com sucesso!
+
+    ir para pagina inicial
+    ${titulo_clicado}=       Selecionar o primeiro filme da lista e ver detalhes
+    Selecionar a primeira sessão da lista
+    Wait For Elements State    css=.seats-container    visible    timeout=5s
+    ${assento_clicado}=      Encontrar e clicar no primeiro assento disponível
+    Click                     css=button >> text=Continuar para Pagamento
+    Selecionar método de pagamento    Cartão de Crédito
+    Click    css=button >> text=Finalizar Compra
+    Conferir mensagem na tela    Reserva Confirmada!
+     ${codigo_reserva}=    Capturar código da reserva
+    Conferir se a reserva está na lista    ${codigo_reserva}
+    
