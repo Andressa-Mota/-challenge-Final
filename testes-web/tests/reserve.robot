@@ -130,4 +130,45 @@ CT-FE-016: Visualizar reserva na página "Minhas Reservas" após a compra
     Conferir mensagem na tela    Reserva Confirmada!
      ${codigo_reserva}=    Capturar código da reserva
     Conferir se a reserva está na lista    ${codigo_reserva}
+
+
+CT-FE-017: Administrador deve visualizar e usar o botão "Liberar Assentos"
+    [Tags]    ASSENTOS     ADM
+
+    ${credenciais_adm}=    Cadastrar adm
+    ir para pagina de login
+    submeter formulario de login    ${credenciais_adm}
+    Conferir mensagem na tela    Login realizado com sucesso!
+    ir para pagina inicial
+    ${titulo_clicado}=    Selecionar o primeiro filme da lista e ver detalhes
+    Selecionar a primeira sessão da lista
+    Wait For Elements State    css=.seats-container    visible    timeout=5s
+    Wait For Elements State    css=button.reset-seats-btn    visible    timeout=5s
+    ${subtotal_inicial}=    Capturar subtotal
+    ${titulo_do_assento}=    Encontrar e clicar no primeiro assento disponível
+    Sleep    1s  # Pausa para o subtotal atualizar
+    ${subtotal_selecionado}=    Capturar subtotal
+    Should Be True    ${subtotal_selecionado} > ${subtotal_inicial}
+    Click    css=button.reset-seats-btn
+    Sleep    1s  # Pausa para a interface reagir
+    ${subtotal_final}=       Capturar subtotal
+    Should Be Equal As Numbers    ${subtotal_final}    ${subtotal_inicial}
+CT-FE-018: Usuário comum não deve visualizar o botão "Resetar Assentos"
+    [Tags]    ASSENTOS  NEGATIVO
+
+    ${email_rand}=    Generate Random String    8    [LOWER]
+    ${user}=          Create Dictionary    name=RegularUser    email=${email_rand}@test.com    password=senha123
+    remover usuario do banco de dados    ${user}[email]
+    ir para pagina de cadastro
+    submeter o formulario de cadastro    ${user}
+    Conferir mensagem na tela    Conta criada com sucesso!
+    ir para pagina de login
+    submeter formulario de login    ${user}
+    Conferir mensagem na tela    Login realizado com sucesso!
+    ir para pagina inicial
+    ${titulo_clicado}=    Selecionar o primeiro filme da lista e ver detalhes
+    Selecionar a primeira sessão da lista
+    Wait For Elements State    css=.seats-container    visible    timeout=5s
+   # Verificamos que o botão 'Resetar Assentos' está no estado 'hidden' (não visível).
+    Wait For Elements State   css=button >> text=Liberar Assentos    hidden    timeout=1s
     
